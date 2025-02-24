@@ -5,6 +5,31 @@ import okIcon from '../img/ok-icon.svg';
 
 const form = document.querySelector('.form');
 const createButton = form.querySelector('.create-button');
+const inputs = form.querySelectorAll('input[name="state"]');
+const fieldset = form.querySelector('.fieldset');
+
+inputs.forEach(inp => {
+  inp.addEventListener('change', () => {
+    if (inp.checked) {
+      fieldset.classList.add('fieldset-border');
+    } else {
+      fieldset.classList.remove('fieldset-border');
+    }
+  });
+});
+
+setTimeout(() => {
+  iziToast.info({
+    title: 'Hello',
+    titleColor: '#fff',
+    message: 'Welcome!',
+    icon: 'far fa-bell',
+    iconColor: '#fff',
+    backgroundColor: '#09f',
+    position: 'topRight',
+    messageColor: '#fff',
+  });
+}, 1000);
 
 form.addEventListener('submit', event => {
   event.preventDefault();

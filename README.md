@@ -7,7 +7,7 @@
 використовуватися у блогах, інтернет-магазинах, сторінках реєстрації подій, під
 час технічного обслуговування тощо. Подивися демовідео роботи таймера.
 
-https://github.com/user-attachments/assets/9ef24921-4bdf-435b-9196-bcf88171e7f5
+https://github.com/user-attachments/assets/dd81e611-7cf9-4a5d-bd15-43540638953a
 
 #### Елементи інтерфейсу
 
@@ -173,7 +173,7 @@ import 'izitoast/dist/css/iziToast.min.css';
 Виконуй це завдання у файлах `2-snackbar.html` і `2-snackbar.js`. Подивися
 демовідео роботи генератора промісів.
 
-https://github.com/user-attachments/assets/51db4751-85aa-435f-b954-13f2b9f52009
+https://github.com/user-attachments/assets/2d99e2db-de4e-4dc2-abaf-674c0aa204f3
 
 Додай в HTML файл розмітку форми. Форма складається з поля вводу для введення
 значення затримки в мілісекундах, двох радіокнопок, які визначають те, як

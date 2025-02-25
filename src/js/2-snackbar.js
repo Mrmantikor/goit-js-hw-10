@@ -1,7 +1,8 @@
 import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
-import iconError from '../img/error-white.svg';
-import okIcon from '../img/ok-icon.svg';
+import iconError from '../img/icon-error.svg';
+import okIcon from '../img/icon-ok.svg';
+import bellIcon from '../img/icon-bell.svg';
 
 const form = document.querySelector('.form');
 const createButton = form.querySelector('.create-button');
@@ -28,6 +29,8 @@ setTimeout(() => {
     backgroundColor: '#09f',
     position: 'topRight',
     messageColor: '#fff',
+    iconUrl: bellIcon,
+    iconColor: '#fafafb',
   });
 }, 1000);
 

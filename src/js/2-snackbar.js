@@ -5,94 +5,109 @@ import okIcon from '../img/icon-ok.svg';
 import bellIcon from '../img/icon-bell.svg';
 
 const form = document.querySelector('.form');
-const createButton = form.querySelector('.create-button');
-const inputs = form.querySelectorAll('input[name="state"]');
-const fieldset = form.querySelector('.fieldset');
 
-inputs.forEach(inp => {
-  inp.addEventListener('change', () => {
-    if (inp.checked) {
-      fieldset.classList.add('fieldset-border');
-    } else {
-      fieldset.classList.remove('fieldset-border');
-    }
+if (!form) {
+  console.error('Form element not found');
+} else {
+  const createButton = form.querySelector('.create-button');
+  const inputs = form.querySelectorAll('input[name="state"]');
+  const fieldset = form.querySelector('.fieldset');
+  const delayInput = form.querySelector('.input-delay');
+
+  inputs.forEach(inp => {
+    inp.addEventListener('change', () => {
+      fieldset.classList.toggle('fieldset-border', inp.checked);
+    });
   });
-});
 
-setTimeout(() => {
-  iziToast.info({
-    title: 'Hello',
-    titleColor: '#fff',
-    message: 'Welcome!',
-    icon: 'far fa-bell',
-    iconColor: '#fff',
-    backgroundColor: '#09f',
-    position: 'topRight',
-    messageColor: '#fff',
-    iconUrl: bellIcon,
-    iconColor: '#fafafb',
-  });
-}, 1000);
-
-form.addEventListener('submit', event => {
-  event.preventDefault();
-
-  const state = form.querySelector('input[name="state"]:checked')?.value;
-  let delay = form.querySelector('.input-delay').value;
-
-  delay = Number(delay);
-  if (isNaN(delay) || delay < 0) {
-    iziToast.error({
-      title: 'Error',
-      message: 'Введіть коректне число для затримки!',
+  setTimeout(() => {
+    iziToast.info({
+      title: 'Hello',
+      titleColor: '#fff',
+      message: 'Welcome!',
+      iconUrl: bellIcon,
+      iconColor: '#fafafb',
+      backgroundColor: '#09f',
       position: 'topRight',
-      timeout: 5000,
-      iconUrl: iconError,
+      messageColor: '#fff',
     });
-    return;
-  }
+  }, 1000);
 
-  const promise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      state === 'fulfilled' ? resolve(delay) : reject(delay);
-    }, delay);
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+
+    const checkedInput = form.querySelector('input[name="state"]:checked');
+    const delayValue = delayInput.value.trim();
+
+    if (!checkedInput) {
+      iziToast.warning({
+        title: 'Warning',
+        message: 'Будь ласка, виберіть стан промісу',
+        position: 'topRight',
+        color: '#ffa500',
+      });
+      return;
+    }
+
+    if (!delayValue || isNaN(delayValue) || Number(delayValue) < 0) {
+      iziToast.warning({
+        title: 'Warning',
+        message: 'Будь ласка, введіть коректну затримку (не відʼємне число)',
+        position: 'topRight',
+        color: '#ffa500',
+      });
+      return;
+    }
+
+    const state = checkedInput.value;
+    const delay = Number(delayValue);
+
+    const promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (state === 'fulfilled') {
+          resolve(delay);
+        } else if (state === 'rejected') {
+          reject(delay);
+        }
+      }, delay);
+    });
+
+    promise
+      .then(delay => {
+        iziToast.show({
+          title: 'OK',
+          titleColor: '#fff',
+          titleSize: '16px',
+          titleLineHeight: '1.5',
+          message: `✅ Проміс виконано через ${delay}мс`,
+          messageSize: '16px',
+          messageLineHeight: '1.5',
+          messageColor: '#fff',
+          color: '#59a10d',
+          position: 'topRight',
+          timeout: 5000,
+          iconUrl: okIcon,
+          iconColor: '#fafafb',
+          theme: 'dark',
+        });
+      })
+      .catch(delay => {
+        iziToast.show({
+          title: 'Error',
+          titleColor: '#fff',
+          titleSize: '16px',
+          titleLineHeight: '1.5',
+          message: `❌ Проміс відхилено через ${delay}мс`,
+          messageSize: '16px',
+          messageLineHeight: '1.5',
+          messageColor: '#fff',
+          color: '#ef4040',
+          position: 'topRight',
+          timeout: 5000,
+          iconUrl: iconError,
+          iconColor: '#fafafb',
+          theme: 'dark',
+        });
+      });
   });
-
-  promise
-    .then(delay => {
-      iziToast.show({
-        title: '✅ Успіх',
-        titleColor: '#fff',
-        titleSize: '16px',
-        titleLineHeight: '1.5',
-        messageSize: '16px',
-        messageLineHeight: '1.5',
-        message: `Завершено promise за ${delay}ms`,
-        messageColor: '#fff',
-        color: '#59a10d',
-        position: 'topRight',
-        timeout: 5000,
-        iconUrl: okIcon,
-        iconColor: '#fafafb',
-        theme: 'dark',
-      });
-    })
-    .catch(delay => {
-      iziToast.show({
-        title: '❌ Помилка',
-        titleColor: '#fff',
-        titleSize: '16px',
-        titleLineHeight: '1.5',
-        messageSize: '16px',
-        messageLineHeight: '1.5',
-        message: `Promise відхилено через ${delay}ms`,
-        messageColor: '#fff',
-        color: '#ef4040',
-        position: 'topRight',
-        timeout: 5000,
-        iconUrl: iconError,
-        iconColor: '#fafafb',
-        theme: 'dark',
-      });
-    });
-});
+}

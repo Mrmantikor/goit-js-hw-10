@@ -42,7 +42,6 @@ form.addEventListener('submit', event => {
   const delayValue = Number(delay);
 
   if (!delayValue || isNaN(delayValue) || delayValue <= 0) {
-    // Changed to <= 0
     iziToast.warning({
       title: 'Warning',
       message: 'Please enter a valid positive delay.',
